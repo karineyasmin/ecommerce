@@ -8,22 +8,22 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>
         {% block titulo %}
-        {% enblock titulo %}
+        {% endblock titulo %}
     </title>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
+            <a class="navbar-brand" href="#">Ecommerce</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav me-auto">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    <a class="nav-link" href="#">Produtos</a>
+                    <a class="nav-link active" aria-current="page" href="{{url_for('page_home')}}">Home</a>
+                    <a class="nav-link" href="{{url_for('page_produto')}}">Produtos</a>
                 </div>
                 <div class="navbar-nav ms-auto">
                     <a class="nav-link" href="#">Login</a>
@@ -46,10 +46,10 @@
         crossorigin="anonymous"></script>
 </body>
 <style>
-    body {
-        background-color: #f1eeee;
-        color: rgb(0, 0, 0)
+    <!-- body {
+    color: rgb(0, 0, 0)
     }
+    -->
 </style>
 
 </html>
