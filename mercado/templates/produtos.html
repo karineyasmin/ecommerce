@@ -15,6 +15,9 @@ Produtos
             <th scope="col">Nome</th>
             <th scope="col">Código de Barras</th>
             <th scope="col">Preço</th>
+            <th scope="col">Descrição</th>
+            <th scope="col">Ações</th>
+
 
         </tr>
     </thead>
@@ -25,6 +28,14 @@ Produtos
             <td>{{item.nome}}</td>
             <td>{{item.cod_barra}}</td>
             <td>{{item.preco}}</td>
+            <td>{{item.descricao}}</td>
+            <td>
+                <button class="btn btn-outline btn-info">Mais informações</button>
+                <button class="btn btn-outline btn-success">Comprar Produto</button>
+            </td>
+
             {% endfor %}
         </tr>
-        </tbod {% endblock conteudo %}
+    </tbody>
+</table>
+{% endblock conteudo %}
