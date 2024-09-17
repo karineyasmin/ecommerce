@@ -1,7 +1,7 @@
 from mercado import app
 from flask import render_template
 from mercado.models import Item
-from forms import CadastroForm
+from mercado.forms import CadastroForm
 
 
 @app.route("/")
