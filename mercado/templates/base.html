@@ -33,6 +33,14 @@
         </div>
     </nav>
 
+
+    {% with messages = get_flashed_messaegs(with_categories = true) %}
+    {% if messages %}
+    {% for message in messages%}
+    <p>{{message}}</p>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
     {% block conteudo %}
 
     {% endblock conteudo %}
