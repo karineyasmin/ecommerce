@@ -1,4 +1,5 @@
 from mercado import db
+from mercado import bcrypt
 
 
 class Item(db.Model):
@@ -20,3 +21,11 @@ class User(db.Model):
     senha = db.Column(db.String(length=60), nullable=False, unique=True)
     valor = db.Column(db.Integer, nullable=False, default=5000)
     itens = db.relationship("Item", backref="dono_user", lazy=True)
+
+    @property
+    def senha_crip(self):
+        return self.senha_crip
+
+    @senha_crip.setter
+    def senha_crip(self, senha_texto):
+        self.senha = bcrypt.generate_password_hash(senha_texto).decode("utf-8")
