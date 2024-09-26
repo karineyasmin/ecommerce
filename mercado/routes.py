@@ -23,7 +23,7 @@ def page_cadastro():
         usuario = User(
             usuario=form.usuario.data,
             email=form.email.data,
-            senha=form.senha1.data,
+            senha_crip=form.senha1.data,
         )
 
         db.session.add(usuario)
