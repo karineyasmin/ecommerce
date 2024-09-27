@@ -1,7 +1,7 @@
 from mercado import app
 from flask import render_template, redirect, url_for, flash
 from mercado.models import Item, User
-from mercado.forms import CadastroForm
+from mercado.forms import CadastroForm, LoginForm
 from mercado import db
 
 
@@ -39,4 +39,5 @@ def page_cadastro():
 
 @app.route("/login", methods=["GET", "POST"])
 def page_login():
-    return render_template("login.html")
+    form = LoginForm()
+    return render_template("login.html", form=form)
