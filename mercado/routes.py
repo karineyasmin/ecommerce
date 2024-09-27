@@ -35,3 +35,8 @@ def page_cadastro():
         for err in form.errors.values():
             flash(f"Erro ao cadastrar usuário {err}", category="danger")
     return render_template("cadastro.html", form=form)
+
+
+@app.route("/login", methods=["GET", "POST"])
+def page_login():
+    return render_template("login.html")
