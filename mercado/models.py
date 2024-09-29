@@ -29,3 +29,6 @@ class User(db.Model):
     @senha_crip.setter
     def senha_crip(self, senha_texto):
         self.senha = bcrypt.generate_password_hash(senha_texto).decode("utf-8")
+
+    def converte_senha(self, senha_texto_claro):
+        return bcrypt.check_password_hash(self.senha, senha_texto_claro)

@@ -3,6 +3,7 @@ from flask import render_template, redirect, url_for, flash
 from mercado.models import Item, User
 from mercado.forms import CadastroForm, LoginForm
 from mercado import db
+from flask_login import login_user
 
 
 @app.route("/")
@@ -40,4 +41,18 @@ def page_cadastro():
 @app.route("/login", methods=["GET", "POST"])
 def page_login():
     form = LoginForm()
+    if form.validate_on_submit():
+        usuario_logado = User.query.filter_by(usuario=form.usuario).first()
+        if usuario_logado and usuario_logado.converte_senha(
+            senha_texto_claro=form.senha.data
+        ):
+            login_user(usuario_logado)
+            flash(
+                f"Login efetuado com Sucesso! Seu login é {usuario_logado.usuario}",
+                category="success",
+            )
+            return redirect(url_for("page_produto"))
+        else:
+            flash(f"Usuário ou senha inválidos! Tente novamente", category="danger")
+
     return render_template("login.html", form=form)
