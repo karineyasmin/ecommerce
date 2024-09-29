@@ -42,7 +42,7 @@ def page_cadastro():
 def page_login():
     form = LoginForm()
     if form.validate_on_submit():
-        usuario_logado = User.query.filter_by(usuario=form.usuario).first()
+        usuario_logado = User.query.filter_by(usuario=form.usuario.data).first()
         if usuario_logado and usuario_logado.converte_senha(
             senha_texto_claro=form.senha.data
         ):
