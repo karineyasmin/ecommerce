@@ -1,8 +1,14 @@
-from mercado import db
+from mercado import db, login_manager
 from mercado import bcrypt
+from flask_login import UserMixin
 
 
-class Item(db.Model):
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+
+class Item(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(length=30), nullable=False, unique=True)
     preco = db.Column(db.Integer, nullable=False)
