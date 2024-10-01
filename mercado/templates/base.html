@@ -25,10 +25,23 @@
                     <a class="nav-link active" aria-current="page" href="{{url_for('page_home')}}">Home</a>
                     <a class="nav-link" href="{{url_for('page_produto')}}">Produtos</a>
                 </div>
+                {% if current_user.is_authenticated %}
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link">Bem Vindo, {{ current_user.usuario }}</a>
+                    <a class="nav-link" style="color: lawngreen; font-weight: bold;">
+                        <i>{{ current_user.valor }}</i>
+                    </a>
+
+                    <a class=" nav-link" href="#">Logout</a>
+                </div>
+
+                {% else %}
                 <div class="navbar-nav ms-auto">
                     <a class="nav-link" href="{{url_for('page_login')}}">Login</a>
                     <a class="nav-link" href="{{url_for('page_cadastro')}}">Cadastro</a>
                 </div>
+                {% endif %}
+
             </div>
         </div>
     </nav>
