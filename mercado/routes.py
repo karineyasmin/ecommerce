@@ -53,6 +53,6 @@ def page_login():
             )
             return redirect(url_for("page_produto"))
         else:
-            flash(f"Usuário ou senha inválidos! Tente novamente", category="danger")
+            flash("Usuário ou senha inválidos! Tente novamente", category="danger")
 
     return render_template("login.html", form=form)
