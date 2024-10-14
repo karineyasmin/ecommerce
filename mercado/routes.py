@@ -3,7 +3,7 @@ from flask import render_template, redirect, url_for, flash
 from mercado.models import Item, User
 from mercado.forms import CadastroForm, LoginForm
 from mercado import db
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, login_required
 
 
 @app.route("/")
@@ -12,6 +12,7 @@ def page_home():
 
 
 @app.route("/produtos")
+@login_required
 def page_produto():
     itens = Item.query.all()
     return render_template("produtos.html", itens=itens)
