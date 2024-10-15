@@ -1,10 +1,11 @@
-{% extends 'base.html' %}
+'{% extends 'base.html' %}
 
 {% block titulo %}
 Produtos
 {% endblock titulo %}
 
 {% block conteudo %}
+{% include 'includes/modal_produtos.html' %}
 <div class="row" style="margin-top: 20px; margin-left: 20px">
     <div class="col-8">
         <h2 style="text-align: center;">Produtos Disponíveis</h2>
@@ -31,7 +32,8 @@ Produtos
                     <td>{{item.cod_barra}}</td>
                     <td>{{item.preco}}</td>
                     <td>
-                        <button class="btn btn-outline btn-info">Mais informações</button>
+                        <button class="btn btn-outline btn-info" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">Mais informações</button>
                         <button class="btn btn-outline btn-success">Comprar Produto</button>
                     </td>
 
