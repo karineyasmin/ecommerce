@@ -1,6 +1,5 @@
 from mercado import db, login_manager
 from mercado import bcrypt
-from flask_login import UserMixin
 
 
 @login_manager.user_loader
@@ -31,11 +30,25 @@ class User(db.Model):
     def senha_crip(self, senha_texto):
         self.senha = bcrypt.generate_password_hash(senha_texto).decode("utf-8")
 
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_authenticated(self):
+        return True
+
+    def get_id(self):
+        return self.id
+
     def converte_senha(self, senha_texto_claro):
         return bcrypt.check_password_hash(self.senha, senha_texto_claro)
 
+    def compra_disponivel(self, produto_obj):
+        return self.valor >= produto_obj.preco
 
-class Item(db.Model, UserMixin):
+
+class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(length=30), nullable=False, unique=True)
     preco = db.Column(db.Integer, nullable=False)

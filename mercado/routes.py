@@ -1,9 +1,9 @@
 from mercado import app
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash, request
 from mercado.models import Item, User
 from mercado.forms import CadastroForm, LoginForm, CompraProdutoForm
 from mercado import db
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 
 
 @app.route("/")
@@ -11,14 +11,30 @@ def page_home():
     return render_template("home.html")
 
 
-@app.route("/produtos")
+@app.route("/produtos", methods=["GET", "POST"])
 @login_required
 def page_produto():
-    compra_form = CompraProdutoForm(
-        "produtos.html", itens=itens, compra_form=compra_form
-    )
+    compra_form = CompraProdutoForm()
+
+    if request.method == "POST":
+        compra_produto = request.form.get("compra_produto")
+        produto_obj = Item.query.filter_by(nome=compra_produto).first()
+        if produto_obj:
+            produto_obj.dono = current_user.id
+            current_user.valor -= produto_obj.preco
+            db.session.commit()
+            flash(
+                f"Você comprou o produto {produto_obj.nome}",
+                category="success",
+            )
+        return redirect(url_for("page_produto"))
+
     itens = Item.query.all()
-    return render_template("produtos.html", itens=itens)
+    return render_template(
+        "produtos.html",
+        itens=itens,
+        compra_form=compra_form,
+    )
 
 
 @app.route("/cadastro", methods=["GET", "POST"])
@@ -51,14 +67,13 @@ def page_login():
             senha_texto_claro=form.senha.data
         ):
             login_user(usuario_logado)
-            flash(
-                f"Login efetuado com Sucesso! Seu login é {usuario_logado.usuario}",
-                category="success",
-            )
+            flash(f"Sucesso! Seu login é: {usuario_logado.usuario}", category="success")
             return redirect(url_for("page_produto"))
         else:
-            flash("Usuário ou senha inválidos! Tente novamente", category="danger")
-
+            flash(
+                f"Usuário ou senha estão incorretos! Tente novamente.",
+                category="danger",
+            )
     return render_template("login.html", form=form)
 
 

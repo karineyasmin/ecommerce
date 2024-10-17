@@ -38,8 +38,8 @@
                         Clique no botão comprar, para comprar este produto
                     </h6>
                     <br>
-                    {{compra_form.submit(class="btn btn-outline-success btn-block")}}
-
+                    <input id="compra_produto" name="compra_produto" type="hidden" value="{{item.nome}}">
+                    {{compra_form.submit(class="btn btn-outline-success btn-block" )}}
                 </form>
             </div>
             <div class="modal-footer">
