@@ -8,18 +8,6 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-class Item(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(length=30), nullable=False, unique=True)
-    preco = db.Column(db.Integer, nullable=False)
-    cod_barra = db.Column(db.String(length=12), nullable=False, unique=True)
-    descricao = db.Column(db.String(length=1024), nullable=False, unique=True)
-    dono = db.Column(db.Integer, db.ForeignKey("user.id"))
-
-    def __repr__(self):
-        return f"Item {self.nome}"
-
-
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     usuario = db.Column(db.String(length=30), nullable=False, unique=True)
@@ -27,6 +15,13 @@ class User(db.Model):
     senha = db.Column(db.String(length=60), nullable=False, unique=True)
     valor = db.Column(db.Integer, nullable=False, default=5000)
     itens = db.relationship("Item", backref="dono_user", lazy=True)
+
+    @property
+    def formataValor(self):
+        if len(str(self.valor)) >= 4:  # R$ 400
+            return f"R$ {str(self.valor)[:-3]}, {str(self.valor)[-3:]}"
+        else:
+            return f"R$ {self.valor}"
 
     @property
     def senha_crip(self):
@@ -38,3 +33,15 @@ class User(db.Model):
 
     def converte_senha(self, senha_texto_claro):
         return bcrypt.check_password_hash(self.senha, senha_texto_claro)
+
+
+class Item(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(length=30), nullable=False, unique=True)
+    preco = db.Column(db.Integer, nullable=False)
+    cod_barra = db.Column(db.String(length=12), nullable=False, unique=True)
+    descricao = db.Column(db.String(length=1024), nullable=False, unique=True)
+    dono = db.Column(db.Integer, db.ForeignKey("user.id"))
+
+    def __repr__(self):
+        return f"Item {self.nome}"
