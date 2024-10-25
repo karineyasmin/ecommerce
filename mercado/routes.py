@@ -28,18 +28,20 @@ def page_produto():
                 )
             else:
                 flash(
-                    f"Saldo insuficiente para comprar o produto {produto_obj.nome}",
+                    f"Saldo insuficiente para comprar {produto_obj.nome}",
                     category="danger",
                 )
         return redirect(url_for("page_produto"))
 
     if request.method == "GET":
         itens = Item.query.filter_by(dono=None)
+        dono_itens = Item.query.filter_by(dono=current_user.id)
 
         return render_template(
             "produtos.html",
             itens=itens,
             compra_form=compra_form,
+            dono_itens=dono_itens,
         )
 
 
