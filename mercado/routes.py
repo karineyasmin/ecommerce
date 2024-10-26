@@ -17,23 +17,22 @@ def page_produto():
     compra_form = CompraProdutoForm()
     venda_form = VendaProdutoForm()
 
+    # Compra produto
     if request.method == "POST":
-        # Compra produto
         compra_produto = request.form.get("compra_produto")
         produto_obj = Item.query.filter_by(nome=compra_produto).first()
         if produto_obj:
             if current_user.compra_disponivel(produto_obj):
                 produto_obj.compra(current_user)
                 flash(
-                    f"Você comprou o produto {produto_obj.nome}",
+                    f"Parabéns! Você comprou o produto {produto_obj.nome}",
                     category="success",
                 )
             else:
                 flash(
-                    f"Saldo insuficiente para comprar {produto_obj.nome}",
+                    f"Você não possui saldo suficiente para comprar o produto {produto_obj.nome}",
                     category="danger",
                 )
-
         # Venda produto
         venda_produto = request.form.get("venda_produto")
         produto_obj_venda = Item.query.filter_by(nome=venda_produto).first()
@@ -42,7 +41,7 @@ def page_produto():
             if current_user.venda_disponivel(produto_obj_venda):
                 produto_obj_venda.venda(current_user)
                 flash(
-                    "Parabéns! Você vendeu o produto {produto_obj.nome}",
+                    f"Parabéns! Você vendeu o produto {produto_obj_venda.nome}",
                     category="success",
                 )
             else:
@@ -52,6 +51,17 @@ def page_produto():
                 )
 
         return redirect(url_for("page_produto"))
+
+    if request.method == "GET":
+        itens = Item.query.filter_by(dono=None)
+        dono_itens = Item.query.filter_by(dono=current_user.id)
+        return render_template(
+            "produtos.html",
+            itens=itens,
+            compra_form=compra_form,
+            dono_itens=dono_itens,
+            venda_form=venda_form,
+        )
 
     if request.method == "GET":
         itens = Item.query.filter_by(dono=None)
