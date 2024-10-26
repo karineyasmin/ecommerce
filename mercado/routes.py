@@ -18,6 +18,7 @@ def page_produto():
     venda_form = VendaProdutoForm()
 
     if request.method == "POST":
+        # Compra produto
         compra_produto = request.form.get("compra_produto")
         produto_obj = Item.query.filter_by(nome=compra_produto).first()
         if produto_obj:
@@ -32,6 +33,24 @@ def page_produto():
                     f"Saldo insuficiente para comprar {produto_obj.nome}",
                     category="danger",
                 )
+
+        # Venda produto
+        venda_produto = request.form.get("venda_produto")
+        produto_obj_venda = Item.query.filter_by(nome=venda_produto).first()
+
+        if produto_obj_venda:
+            if current_user.venda_disponivel(produto_obj_venda):
+                produto_obj_venda.venda(current_user)
+                flash(
+                    "Parabéns! Você vendeu o produto {produto_obj.nome}",
+                    category="success",
+                )
+            else:
+                flash(
+                    f"Algo deu errado com a venda do produto {produto_obj_venda.nome}",
+                    category="danger",
+                )
+
         return redirect(url_for("page_produto"))
 
     if request.method == "GET":
